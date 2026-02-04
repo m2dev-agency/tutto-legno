@@ -1,0 +1,68 @@
+name: Zero-Config Deploy
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Calcola Variabili
+        id: vars
+        run: |
+          # 1. Il nome del progetto è il nome della repo (es. 'cliente-mario')
+          # Puliamo il nome da eventuali prefissi 'm2dev-agency/'
+          REPO_NAME=${{ github.event.repository.name }}
+          echo "PROJECT_NAME=$REPO_NAME" >> $GITHUB_ENV
+
+          # 2. Logica del Dominio
+          # Se nel codice c'è un file chiamato "CNAME", usiamo quello.
+          # Altrimenti usiamo il sottodominio preview standard.
+          if [ -f "CNAME" ]; then
+            CUSTOM_DOMAIN=$(cat CNAME | xargs)
+            echo "DOMAIN_URL=$CUSTOM_DOMAIN" >> $GITHUB_ENV
+          else
+            echo "DOMAIN_URL=$REPO_NAME.preview.m2dev.it" >> $GITHUB_ENV
+          fi
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          # Questi secret ora sono definiti UNA volta sola nell'Organizzazione
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: PROJECT_NAME,DOMAIN_URL
+          script: |
+            # Le variabili arrivano automaticamente dall'ambiente
+            REPO_URL="https://github.com/${{ github.repository }}.git"
+            # Nota: Devi usare un Personal Access Token nei secret dell'Org se le repo sono private
+            # URL con Token: https://${{ secrets.GH_TOKEN }}@github.com/...
+            
+            TARGET_DIR="/home/ubuntu/apps/clients/$PROJECT_NAME"
+
+            echo "🚀 Auto-Deploy start: $PROJECT_NAME su $DOMAIN_URL"
+
+            # Setup Cartella
+            mkdir -p $TARGET_DIR
+            cd $TARGET_DIR
+
+            # Git Clone/Pull
+            if [ ! -d ".git" ]; then
+                # Cloniamo usando il token dell'organizzazione
+                git clone https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git .
+            else
+                git pull origin main || git pull origin master
+            fi
+
+            # Generazione .env dinamico
+            echo "PROJECT_NAME=$PROJECT_NAME" > .env
+            echo "DOMAIN_URL=$DOMAIN_URL" >> .env
+
+            # Docker Magic
+            docker compose up -d --build --remove-orphans
+            
+            echo "✅ Sito Online: https://$DOMAIN_URL"

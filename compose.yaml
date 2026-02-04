@@ -1,0 +1,18 @@
+services:
+  web:
+    build: .
+    container_name: ${PROJECT_NAME}
+    restart: always
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${PROJECT_NAME}.rule=Host(`${DOMAIN_URL}`)"
+      - "traefik.http.routers.${PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${PROJECT_NAME}.tls.certresolver=myresolver"
+      # Middleware anti-indicizzazione attivo di default (per le preview)
+      - "traefik.http.routers.${PROJECT_NAME}.middlewares=no-bots"
+
+networks:
+  web:
+    external: true
