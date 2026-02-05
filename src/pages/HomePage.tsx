@@ -63,10 +63,10 @@ const positionsTablet = [
 
 // Mobile - immagine principale come sfondo a schermo intero
 const positionsMobile = [
-  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0.4 },
-  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0 },
-  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0 },
-  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0 },
+  { top: '0%', left: '0%', width: '100%', height: '100%', rotate: 0, opacity: 0.4 },
+  { top: '0%', left: '0%', width: '100%', height: '100%', rotate: 0, opacity: 0 },
+  { top: '0%', left: '0%', width: '100%', height: '100%', rotate: 0, opacity: 0 },
+  { top: '0%', left: '0%', width: '100%', height: '100%', rotate: 0, opacity: 0 },
 ];
 
 // Hook per tracciare il mouse
