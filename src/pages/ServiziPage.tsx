@@ -217,15 +217,15 @@ export default function ServiziPage() {
       </section>
 
       {/* Process Section */}
-      <section className="section-padding bg-wood-dark">
+      <section className="section-padding bg-wood-beige">
         <div className="container-custom mx-auto">
           <ScrollReveal animation="fade-up">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <span className="text-accent-gold font-medium mb-2 block">Come Lavoriamo</span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-wood-dark mb-4">
                 Il Nostro Processo
               </h2>
-              <p className="text-wood-cream/80">
+              <p className="text-wood-medium">
                 Dalla prima idea alla consegna, ti accompagniamo in ogni fase.
               </p>
             </div>
@@ -239,17 +239,14 @@ export default function ServiziPage() {
               { step: '04', title: 'Consegna', desc: 'Installiamo e ti consegniamo il lavoro finito' },
             ].map((item, index) => (
               <ScrollReveal key={item.step} animation="fade-up" delay={index * 100}>
-                <div className="text-center relative">
-                  <div className="text-7xl font-heading font-bold text-wood-medium/30 mb-4">
+                <div className="text-center relative bg-white rounded-2xl p-6 shadow-md">
+                  <div className="text-6xl font-heading font-bold text-accent-gold/30 mb-4">
                     {item.step}
                   </div>
-                  <h3 className="font-heading text-xl font-semibold text-white mb-2">
+                  <h3 className="font-heading text-xl font-semibold text-wood-dark mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-wood-cream/70 text-sm">{item.desc}</p>
-                  {index < 3 && (
-                    <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-wood-medium/50 to-transparent" />
-                  )}
+                  <p className="text-wood-medium text-sm">{item.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -258,20 +255,22 @@ export default function ServiziPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-gradient-to-br from-wood-warm to-wood-medium">
+      <section className="section-padding bg-white">
         <div className="container-custom mx-auto text-center">
           <ScrollReveal animation="fade-up">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
-              Pronto a Realizzare il Tuo Progetto?
-            </h2>
-            <p className="text-wood-cream/90 text-lg mb-8 max-w-2xl mx-auto">
-              Contattaci per una consulenza gratuita. Saremo felici di ascoltare la tua idea 
-              e proporti la soluzione migliore.
-            </p>
-            <Link to="/contatti" className="btn-gold inline-flex items-center gap-2">
-              Richiedi Preventivo Gratuito
-              <ArrowRight size={20} />
-            </Link>
+            <div className="bg-gradient-to-br from-wood-warm to-wood-medium rounded-3xl p-10 md:p-16 shadow-xl max-w-4xl mx-auto">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
+                Pronto a Realizzare il Tuo Progetto?
+              </h2>
+              <p className="text-wood-cream/90 text-lg mb-8">
+                Contattaci per una consulenza gratuita. Saremo felici di ascoltare la tua idea 
+                e proporti la soluzione migliore.
+              </p>
+              <Link to="/contatti" className="btn-gold inline-flex items-center gap-2">
+                Richiedi Preventivo Gratuito
+                <ArrowRight size={20} />
+              </Link>
+            </div>
           </ScrollReveal>
         </div>
       </section>

@@ -154,12 +154,12 @@ export default function ChiSiamoPage() {
       </section>
 
       {/* I Nostri Valori */}
-      <section className="section-padding bg-wood-dark">
+      <section className="section-padding bg-white">
         <div className="container-custom mx-auto">
           <ScrollReveal animation="fade-up">
             <div className="text-center mb-16">
               <span className="text-accent-gold font-medium mb-2 block">I Nostri Valori</span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-wood-dark">
                 Cosa Ci Guida Ogni Giorno
               </h2>
             </div>
@@ -168,14 +168,14 @@ export default function ChiSiamoPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <ScrollReveal key={value.title} animation="fade-up" delay={index * 100}>
-                <div className="text-center">
-                  <div className="w-20 h-20 bg-wood-medium rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <value.icon size={36} className="text-accent-gold" />
+                <div className="text-center bg-wood-beige rounded-2xl p-6">
+                  <div className="w-20 h-20 bg-wood-warm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <value.icon size={36} className="text-white" />
                   </div>
-                  <h3 className="font-heading text-xl font-semibold text-white mb-3">
+                  <h3 className="font-heading text-xl font-semibold text-wood-dark mb-3">
                     {value.title}
                   </h3>
-                  <p className="text-wood-cream/80 text-sm leading-relaxed">
+                  <p className="text-wood-medium text-sm leading-relaxed">
                     {value.description}
                   </p>
                 </div>
@@ -251,23 +251,25 @@ export default function ChiSiamoPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-gradient-to-br from-wood-warm to-wood-dark">
+      <section className="section-padding bg-wood-beige">
         <div className="container-custom mx-auto text-center">
           <ScrollReveal animation="fade-up">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
-              Vuoi Conoscerci di Persona?
-            </h2>
-            <p className="text-wood-cream/90 text-lg mb-8 max-w-2xl mx-auto">
-              Ti aspettiamo nel nostro laboratorio a Villamagna per mostrarti come lavoriamo 
-              e discutere insieme del tuo progetto.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contatti" className="btn-gold inline-flex items-center justify-center gap-2">
-                Contattaci Ora
-              </Link>
-              <Link to="/galleria" className="btn-secondary border-white text-white hover:bg-white hover:text-wood-dark inline-flex items-center justify-center gap-2">
-                Guarda i Nostri Lavori
-              </Link>
+            <div className="bg-gradient-to-br from-wood-warm to-wood-medium rounded-3xl p-10 md:p-16 shadow-xl max-w-4xl mx-auto">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
+                Vuoi Conoscerci di Persona?
+              </h2>
+              <p className="text-wood-cream/90 text-lg mb-8">
+                Ti aspettiamo nel nostro laboratorio a Villamagna per mostrarti come lavoriamo 
+                e discutere insieme del tuo progetto.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/contatti" className="btn-gold inline-flex items-center justify-center gap-2">
+                  Contattaci Ora
+                </Link>
+                <Link to="/galleria" className="bg-white/20 hover:bg-white hover:text-wood-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center gap-2">
+                  Guarda i Nostri Lavori
+                </Link>
+              </div>
             </div>
           </ScrollReveal>
         </div>

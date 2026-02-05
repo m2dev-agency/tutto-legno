@@ -277,20 +277,22 @@ export default function GalleriaPage() {
       )}
 
       {/* CTA */}
-      <section className="section-padding bg-gradient-to-br from-wood-warm to-wood-dark">
+      <section className="section-padding bg-white">
         <div className="container-custom mx-auto text-center">
           <ScrollReveal animation="fade-up">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
-              Ti Piace Quello che Vedi?
-            </h2>
-            <p className="text-wood-cream/90 text-lg mb-8 max-w-2xl mx-auto">
-              Ogni progetto che vedi è stato realizzato su misura. Raccontaci la tua idea 
-              e creeremo insieme qualcosa di unico per te.
-            </p>
-            <Link to="/contatti" className="btn-gold inline-flex items-center gap-2">
-              Richiedi Preventivo Gratuito
-              <ArrowRight size={20} />
-            </Link>
+            <div className="bg-gradient-to-br from-wood-warm to-wood-medium rounded-3xl p-10 md:p-16 shadow-xl max-w-4xl mx-auto">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
+                Ti Piace Quello che Vedi?
+              </h2>
+              <p className="text-wood-cream/90 text-lg mb-8">
+                Ogni progetto che vedi è stato realizzato su misura. Raccontaci la tua idea 
+                e creeremo insieme qualcosa di unico per te.
+              </p>
+              <Link to="/contatti" className="btn-gold inline-flex items-center gap-2">
+                Richiedi Preventivo Gratuito
+                <ArrowRight size={20} />
+              </Link>
+            </div>
           </ScrollReveal>
         </div>
       </section>

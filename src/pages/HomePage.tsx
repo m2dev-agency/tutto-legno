@@ -153,7 +153,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.slice(0, 4).map((service, index) => (
               <ScrollReveal key={service.id} animation="fade-up" delay={index * 100}>
-                <Link to={`/servizi#${service.id}`} className="card group p-6 h-full">
+                <Link 
+                  to={`/servizi#${service.id}`} 
+                  className="block bg-white rounded-2xl shadow-md border border-gray-100 p-6 h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group"
+                >
                   <div className="w-14 h-14 bg-wood-beige rounded-xl flex items-center justify-center mb-4 group-hover:bg-accent-gold transition-colors">
                     <service.icon size={28} className="text-wood-warm group-hover:text-white transition-colors" />
                   </div>
@@ -183,15 +186,15 @@ export default function HomePage() {
       </section>
 
       {/* Gallery Preview */}
-      <section className="section-padding bg-wood-dark">
+      <section className="section-padding bg-wood-beige">
         <div className="container-custom mx-auto">
           <ScrollReveal animation="fade-up">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <span className="text-accent-gold font-medium mb-2 block">Portfolio</span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-wood-dark mb-4">
                 I Nostri Ultimi Lavori
               </h2>
-              <p className="text-wood-cream/80">
+              <p className="text-wood-medium">
                 Ogni progetto racconta una storia di passione, precisione e cura artigianale.
               </p>
             </div>
@@ -231,12 +234,11 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="section-padding bg-gradient-to-br from-wood-warm to-wood-dark relative overflow-hidden">
-        <div className="absolute inset-0 wood-texture opacity-30" />
-        <div className="container-custom mx-auto relative z-10">
+      <section className="section-padding bg-white">
+        <div className="container-custom mx-auto">
           <ScrollReveal animation="fade-up">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="font-heading text-3xl md:text-5xl font-bold text-white mb-6">
+            <div className="text-center max-w-3xl mx-auto bg-gradient-to-br from-wood-warm to-wood-medium rounded-3xl p-10 md:p-16 shadow-xl">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
                 Hai un Progetto in Mente?
               </h2>
               <p className="text-wood-cream/90 text-lg mb-10">
@@ -250,7 +252,7 @@ export default function HomePage() {
                 </Link>
                 <a
                   href="tel:+393382850673"
-                  className="btn-secondary border-white text-white hover:bg-white hover:text-wood-dark inline-flex items-center justify-center gap-2"
+                  className="bg-white/20 hover:bg-white hover:text-wood-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center justify-center gap-2"
                 >
                   Chiamaci: 338 285 0673
                 </a>

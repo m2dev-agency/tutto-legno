@@ -29,7 +29,6 @@ export default function ScrollReveal({
   className = '',
 }: ScrollRevealProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -38,14 +37,8 @@ export default function ScrollReveal({
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          // Piccolo delay per evitare flash durante il render iniziale
-          requestAnimationFrame(() => {
-            setIsVisible(true);
-            setHasAnimated(true);
-          });
-          observer.unobserve(entry.target);
-        }
+        // Bidirezionale: si attiva quando entra E quando esce
+        setIsVisible(entry.isIntersecting);
       },
       { threshold: 0.15, rootMargin: '0px 0px -30px 0px' }
     );
@@ -53,12 +46,12 @@ export default function ScrollReveal({
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [hasAnimated]);
+  }, []);
 
   const style: CSSProperties = {
     ...(isVisible ? visibleStyles : initialStyles[animation]),
-    transition: `opacity 0.6s ease-out ${delay}ms, transform 0.6s ease-out ${delay}ms`,
-    willChange: isVisible ? 'auto' : 'opacity, transform',
+    transition: `opacity 0.5s ease-out ${delay}ms, transform 0.5s ease-out ${delay}ms`,
+    willChange: 'opacity, transform',
   };
 
   return (
