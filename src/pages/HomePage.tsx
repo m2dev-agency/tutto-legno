@@ -12,22 +12,51 @@ const heroImages = [
   'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80',
 ];
 
-// Posizioni delle 3 immagini flottanti
-const imagePositions = [
-  // Posizione 1: Grande a destra
+// Posizioni delle immagini con coordinate esatte per animazione
+const positions = [
+  // Posizione 0: Grande a destra (principale)
   { 
-    className: 'top-[10%] right-[5%] w-[45vw] h-[60vh] rounded-3xl opacity-90 z-10',
-    rotate: 0 
+    top: '10%', 
+    left: '50%', 
+    width: '45vw', 
+    height: '60vh',
+    rotate: 0,
+    zIndex: 30,
+    opacity: 1,
+    borderRadius: '1.5rem',
   },
-  // Posizione 2: Media in basso a sinistra
+  // Posizione 1: Media in basso a sinistra
   { 
-    className: 'bottom-[20%] left-[3%] w-[28vw] h-[35vh] rounded-2xl opacity-80 z-20',
-    rotate: -3 
+    top: '55%', 
+    left: '3%', 
+    width: '28vw', 
+    height: '35vh',
+    rotate: -3,
+    zIndex: 20,
+    opacity: 0.9,
+    borderRadius: '1rem',
   },
-  // Posizione 3: Piccola in alto a sinistra (nascosta su mobile)
+  // Posizione 2: Piccola in alto a sinistra
   { 
-    className: 'top-[15%] left-[8%] w-[18vw] h-[22vh] rounded-2xl opacity-70 z-0 hidden lg:block',
-    rotate: 5 
+    top: '12%', 
+    left: '5%', 
+    width: '20vw', 
+    height: '25vh',
+    rotate: 5,
+    zIndex: 10,
+    opacity: 0.75,
+    borderRadius: '1rem',
+  },
+  // Posizione 3: Nascosta/uscita (per la quarta immagine)
+  { 
+    top: '40%', 
+    left: '-25%', 
+    width: '15vw', 
+    height: '20vh',
+    rotate: -10,
+    zIndex: 0,
+    opacity: 0,
+    borderRadius: '1rem',
   },
 ];
 
@@ -50,12 +79,12 @@ export default function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
   const mouse = useMousePosition();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [activeImage, setActiveImage] = useState(0);
+  const [rotation, setRotation] = useState(0); // Quante volte abbiamo ruotato
 
   useEffect(() => {
     setIsLoaded(true);
     const interval = setInterval(() => {
-      setActiveImage((prev) => (prev + 1) % heroImages.length);
+      setRotation((prev) => prev + 1);
     }, 4000);
     return () => clearInterval(interval);
   }, []);
@@ -71,11 +100,12 @@ export default function HomePage() {
     return { x, y };
   };
 
-  const parallax = [calcParallax(20), calcParallax(-15), calcParallax(10)];
+  const parallax = calcParallax(15);
 
-  // Calcola quale immagine va in quale posizione (rotazione)
-  const getImageForPosition = (positionIndex: number) => {
-    return (positionIndex + activeImage) % heroImages.length;
+  // Calcola la posizione di ogni immagine basata sulla rotazione
+  const getPositionForImage = (imageIndex: number) => {
+    const posIndex = (imageIndex - rotation % heroImages.length + heroImages.length) % heroImages.length;
+    return positions[posIndex] || positions[3]; // Usa posizione nascosta se fuori range
   };
 
   return (
@@ -99,32 +129,33 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Floating images gallery with carousel rotation */}
+        {/* Floating images with physical movement animation */}
         <div className="absolute inset-0 overflow-hidden">
-          {imagePositions.map((position, posIndex) => {
-            const imageIndex = getImageForPosition(posIndex);
+          {heroImages.map((img, imageIndex) => {
+            const pos = getPositionForImage(imageIndex);
             return (
               <div 
-                key={posIndex}
-                className={`absolute overflow-hidden shadow-2xl ${position.className}`}
+                key={imageIndex}
+                className="absolute overflow-hidden shadow-2xl"
                 style={{
-                  transform: `translate(${parallax[posIndex].x}px, ${parallax[posIndex].y}px) rotate(${position.rotate}deg)`,
-                  transition: 'transform 0.3s ease-out',
+                  top: pos.top,
+                  left: pos.left,
+                  width: pos.width,
+                  height: pos.height,
+                  opacity: pos.opacity,
+                  zIndex: pos.zIndex,
+                  borderRadius: pos.borderRadius,
+                  transform: `translate(${parallax.x * (0.5 + imageIndex * 0.2)}px, ${parallax.y * (0.5 + imageIndex * 0.2)}px) rotate(${pos.rotate}deg)`,
+                  transition: 'top 1.2s cubic-bezier(0.4, 0, 0.2, 1), left 1.2s cubic-bezier(0.4, 0, 0.2, 1), width 1.2s cubic-bezier(0.4, 0, 0.2, 1), height 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease-out',
                 }}
               >
-                {/* Tutte le immagini sovrapposte con transizione */}
-                {heroImages.map((img, imgIndex) => (
-                  <img 
-                    key={imgIndex}
-                    src={img} 
-                    alt="" 
-                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-                      imgIndex === imageIndex ? 'opacity-100' : 'opacity-0'
-                    }`}
-                  />
-                ))}
+                <img 
+                  src={img} 
+                  alt="" 
+                  className="w-full h-full object-cover"
+                />
                 {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-wood-dark/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-br from-wood-dark/20 to-transparent" />
               </div>
             );
           })}
@@ -297,9 +328,9 @@ export default function HomePage() {
           {heroImages.map((_, index) => (
             <button
               key={index}
-              onClick={() => setActiveImage(index)}
+              onClick={() => setRotation(index)}
               className={`h-1 rounded-full transition-all duration-500 ${
-                activeImage === index ? 'bg-accent-gold w-12' : 'bg-white/20 hover:bg-white/40 w-8'
+                rotation % heroImages.length === index ? 'bg-accent-gold w-12' : 'bg-white/20 hover:bg-white/40 w-8'
               }`}
               aria-label={`Mostra immagine ${index + 1}`}
             />
