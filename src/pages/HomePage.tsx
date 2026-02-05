@@ -7,9 +7,9 @@ import { services } from './ServiziPage';
 // Hero section images - placeholder
 const heroImages = [
   'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80',
-  'https://images.unsplash.com/photo-1564505482614-a0a859e28f6d?w=800&q=80',
+  'https://images.unsplash.com/photo-1416339134316-0e91dc9ded92?w=800&q=80',
   'https://images.unsplash.com/photo-1611048267451-e6ed903d4a38?w=800&q=80',
-  'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80',
+  'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=800&q=80',
 ];
 
 // Posizioni delle immagini - responsive e centrate nella viewport
