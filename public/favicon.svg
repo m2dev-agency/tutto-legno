@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="woodGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B4513"/>
+      <stop offset="50%" style="stop-color:#A0522D"/>
+      <stop offset="100%" style="stop-color:#654321"/>
+    </linearGradient>
+  </defs>
+  <!-- Stilized T for TuttoLegno with wood texture -->
+  <rect x="15" y="15" width="70" height="70" rx="10" fill="url(#woodGradient)"/>
+  <!-- Wood grain lines -->
+  <path d="M20 30 Q50 28 80 32" stroke="#5D3A1A" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M20 45 Q50 42 80 48" stroke="#5D3A1A" stroke-width="1" fill="none" opacity="0.3"/>
+  <path d="M20 60 Q50 58 80 62" stroke="#5D3A1A" stroke-width="1" fill="none" opacity="0.4"/>
+  <path d="M20 75 Q50 72 80 78" stroke="#5D3A1A" stroke-width="1" fill="none" opacity="0.3"/>
+  <!-- T Letter -->
+  <text x="50" y="68" font-family="Georgia, serif" font-size="45" font-weight="bold" fill="#FFF8DC" text-anchor="middle">T</text>
+</svg>
