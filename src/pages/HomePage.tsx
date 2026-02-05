@@ -61,12 +61,12 @@ const positionsTablet = [
   { top: '35%', left: '30%', width: '18vw', height: '16vh', rotate: 0, opacity: 0 },
 ];
 
-// Mobile - solo immagine principale, ben centrata sopra il contenuto
+// Mobile - immagine principale come sfondo a schermo intero
 const positionsMobile = [
-  { top: '5%', left: '5%', width: '90vw', height: '30vh', rotate: 0, opacity: 0.5 },
-  { top: '40%', left: '50%', width: '0vw', height: '0vh', rotate: 0, opacity: 0 },
-  { top: '40%', left: '50%', width: '0vw', height: '0vh', rotate: 0, opacity: 0 },
-  { top: '40%', left: '50%', width: '0vw', height: '0vh', rotate: 0, opacity: 0 },
+  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0.4 },
+  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0 },
+  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0 },
+  { top: '0%', left: '0%', width: '100vw', height: '100vh', rotate: 0, opacity: 0 },
 ];
 
 // Hook per tracciare il mouse
@@ -280,13 +280,13 @@ export default function HomePage() {
             
             {/* CTA Buttons with hover effects */}
             <div 
-              className={`flex flex-wrap gap-6 mb-16 transition-all duration-1000 delay-700 ${
+              className={`flex flex-col sm:flex-row gap-4 sm:gap-6 mb-12 sm:mb-16 transition-all duration-1000 delay-700 ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             >
               <Link 
                 to="/contatti" 
-                className="group relative px-8 py-4 bg-accent-gold text-wood-dark font-semibold rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(201,160,80,0.4)]"
+                className="group relative px-8 py-4 bg-accent-gold text-wood-dark font-semibold rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(201,160,80,0.4)] text-center"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Richiedi Preventivo
@@ -301,18 +301,18 @@ export default function HomePage() {
               
               <Link 
                 to="/galleria" 
-                className="group relative px-8 py-4 border border-white/30 text-white font-medium rounded-full overflow-hidden transition-all duration-500 hover:border-white/60"
+                className="group relative px-8 py-4 border border-white/30 text-white font-medium rounded-full overflow-hidden transition-all duration-500 hover:border-white/60 text-center"
               >
-                <span className="relative z-10 flex items-center gap-2">
+                <span className="relative z-10 flex items-center justify-center gap-2">
                   <span className="w-2 h-2 bg-accent-gold rounded-full" />
                   Esplora i Lavori
                 </span>
               </Link>
             </div>
 
-            {/* Animated stats ticker */}
+            {/* Animated stats ticker - hidden on mobile */}
             <div 
-              className={`flex flex-wrap gap-12 transition-all duration-1000 delay-900 ${
+              className={`hidden sm:flex flex-wrap gap-8 md:gap-12 transition-all duration-1000 delay-900 ${
                 isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}
             >
