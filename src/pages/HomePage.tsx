@@ -12,52 +12,61 @@ const heroImages = [
   'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80',
 ];
 
-// Posizioni delle immagini con coordinate esatte per animazione
-const positions = [
-  // Posizione 0: Grande a destra (principale)
+// Posizioni delle immagini - responsive e centrate nella viewport
+// Desktop (lg+) - tutte le immagini visibili e ben distribuite
+const positionsDesktop = [
+  // Posizione 0: Grande a destra (principale) - più centrata
   { 
-    top: '10%', 
+    top: '18%', 
     left: '50%', 
-    width: '45vw', 
-    height: '60vh',
-    rotate: 0,
-    zIndex: 30,
-    opacity: 1,
-    borderRadius: '1.5rem',
+    width: '38vw', 
+    height: '52vh',
+    rotate: 2,
+    opacity: 0.75,
   },
-  // Posizione 1: Media in basso a sinistra
+  // Posizione 1: Media in basso a sinistra - più visibile
   { 
-    top: '55%', 
-    left: '3%', 
-    width: '28vw', 
-    height: '35vh',
+    top: '48%', 
+    left: '8%', 
+    width: '22vw', 
+    height: '30vh',
     rotate: -3,
-    zIndex: 20,
-    opacity: 0.9,
-    borderRadius: '1rem',
+    opacity: 0.6,
   },
   // Posizione 2: Piccola in alto a sinistra
   { 
-    top: '12%', 
-    left: '5%', 
-    width: '20vw', 
-    height: '25vh',
-    rotate: 5,
-    zIndex: 10,
-    opacity: 0.75,
-    borderRadius: '1rem',
+    top: '10%', 
+    left: '12%', 
+    width: '16vw', 
+    height: '20vh',
+    rotate: 4,
+    opacity: 0.5,
   },
-  // Posizione 3: Nascosta/uscita (per la quarta immagine)
+  // Posizione 3: Nascosta (per la transizione)
   { 
     top: '40%', 
-    left: '-25%', 
-    width: '15vw', 
-    height: '20vh',
-    rotate: -10,
-    zIndex: 0,
+    left: '30%', 
+    width: '14vw', 
+    height: '16vh',
+    rotate: 0,
     opacity: 0,
-    borderRadius: '1rem',
   },
+];
+
+// Tablet (md) - immagini più piccole e centrate
+const positionsTablet = [
+  { top: '15%', left: '52%', width: '40vw', height: '42vh', rotate: 2, opacity: 0.7 },
+  { top: '52%', left: '8%', width: '32vw', height: '26vh', rotate: -2, opacity: 0.55 },
+  { top: '8%', left: '8%', width: '24vw', height: '18vh', rotate: 3, opacity: 0.45 },
+  { top: '35%', left: '30%', width: '18vw', height: '16vh', rotate: 0, opacity: 0 },
+];
+
+// Mobile - solo immagine principale, ben centrata sopra il contenuto
+const positionsMobile = [
+  { top: '5%', left: '5%', width: '90vw', height: '30vh', rotate: 0, opacity: 0.5 },
+  { top: '40%', left: '50%', width: '0vw', height: '0vh', rotate: 0, opacity: 0 },
+  { top: '40%', left: '50%', width: '0vw', height: '0vh', rotate: 0, opacity: 0 },
+  { top: '40%', left: '50%', width: '0vw', height: '0vh', rotate: 0, opacity: 0 },
 ];
 
 // Hook per tracciare il mouse
@@ -79,15 +88,32 @@ export default function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
   const mouse = useMousePosition();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [rotation, setRotation] = useState(0); // Quante volte abbiamo ruotato
+  const [rotation, setRotation] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
   useEffect(() => {
     setIsLoaded(true);
+    
+    // Resize handler per responsive
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    
     const interval = setInterval(() => {
       setRotation((prev) => prev + 1);
     }, 4000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
+
+  // Seleziona le posizioni in base alla larghezza
+  const getPositions = () => {
+    if (windowWidth < 768) return positionsMobile;
+    if (windowWidth < 1024) return positionsTablet;
+    return positionsDesktop;
+  };
 
   // Calcola il parallax basato sulla posizione del mouse
   const calcParallax = (intensity: number) => {
@@ -100,12 +126,13 @@ export default function HomePage() {
     return { x, y };
   };
 
-  const parallax = calcParallax(15);
+  const parallax = calcParallax(windowWidth < 768 ? 5 : 12);
+  const positions = getPositions();
 
   // Calcola la posizione di ogni immagine basata sulla rotazione
   const getPositionForImage = (imageIndex: number) => {
     const posIndex = (imageIndex - rotation % heroImages.length + heroImages.length) % heroImages.length;
-    return positions[posIndex] || positions[3]; // Usa posizione nascosta se fuori range
+    return positions[posIndex] || positions[3];
   };
 
   return (
@@ -129,22 +156,20 @@ export default function HomePage() {
           />
         </div>
 
-        {/* Floating images with physical movement animation */}
-        <div className="absolute inset-0 overflow-hidden">
+        {/* Floating images with physical movement animation - z-index 1, dietro tutto */}
+        <div className="absolute inset-0 overflow-hidden z-[1]">
           {heroImages.map((img, imageIndex) => {
             const pos = getPositionForImage(imageIndex);
             return (
               <div 
                 key={imageIndex}
-                className="absolute overflow-hidden shadow-2xl"
+                className="absolute overflow-hidden shadow-2xl rounded-2xl"
                 style={{
                   top: pos.top,
                   left: pos.left,
                   width: pos.width,
                   height: pos.height,
                   opacity: pos.opacity,
-                  zIndex: pos.zIndex,
-                  borderRadius: pos.borderRadius,
                   transform: `translate(${parallax.x * (0.5 + imageIndex * 0.2)}px, ${parallax.y * (0.5 + imageIndex * 0.2)}px) rotate(${pos.rotate}deg)`,
                   transition: 'top 1.2s cubic-bezier(0.4, 0, 0.2, 1), left 1.2s cubic-bezier(0.4, 0, 0.2, 1), width 1.2s cubic-bezier(0.4, 0, 0.2, 1), height 1.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease-out',
                 }}
@@ -155,42 +180,42 @@ export default function HomePage() {
                   className="w-full h-full object-cover"
                 />
                 {/* Overlay gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-wood-dark/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-br from-wood-dark/30 to-transparent" />
               </div>
             );
           })}
         </div>
 
-        {/* Grain texture overlay */}
+        {/* Grain texture overlay - z-index 2 */}
         <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          className="absolute inset-0 opacity-[0.03] pointer-events-none z-[2]"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
           }}
         />
 
-        {/* Marquee text as bottom background */}
-        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
+        {/* Marquee text as bottom background - z-index 5, sopra le immagini */}
+        <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none z-[5]">
           <div 
-            className="flex whitespace-nowrap opacity-[0.07]"
+            className="flex whitespace-nowrap opacity-[0.12]"
             style={{
               maskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
             }}
           >
             <div className="flex animate-marquee">
               {Array(4).fill(null).map((_, i) => (
-                <span key={i} className="flex items-center font-heading text-[12vw] font-bold text-white tracking-tight">
-                  <span className="mx-12">Artigianato</span>
-                  <span className="mx-12">Tradizione</span>
-                  <span className="mx-12">Eccellenza</span>
-                  <span className="mx-12">Passione</span>
+                <span key={i} className="flex items-center font-heading text-[10vw] md:text-[12vw] font-bold text-white tracking-tight">
+                  <span className="mx-8 md:mx-12">Artigianato</span>
+                  <span className="mx-8 md:mx-12">Tradizione</span>
+                  <span className="mx-8 md:mx-12">Eccellenza</span>
+                  <span className="mx-8 md:mx-12">Passione</span>
                 </span>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Content */}
+        {/* Content - z-index 10, sopra tutto */}
         <div className="relative z-10 container-custom mx-auto px-4 py-32">
           <div className="max-w-5xl">
             {/* Eyebrow with animated line */}
