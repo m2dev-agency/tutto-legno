@@ -79,33 +79,72 @@ export default function Header() {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`relative font-medium transition-colors hover:text-accent-gold ${
-                    isScrolled ? 'text-wood-dark' : 'text-white'
-                  } ${location.pathname === link.path ? 'text-accent-gold' : ''}`}
-                >
-                  {link.name}
-                  {location.pathname === link.path && (
-                    <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent-gold rounded-full" />
-                  )}
-                </Link>
-              ))}
+            {/* Desktop Navigation - Elegant */}
+            <div className="hidden lg:flex items-center">
+              {/* Navigation pill background */}
+              <div className="relative flex items-center bg-white/5 backdrop-blur-sm rounded-full p-1 border border-white/10"
+                style={{ 
+                  boxShadow: isScrolled ? 'none' : '0 4px 30px rgba(0,0,0,0.1)',
+                  background: isScrolled ? 'rgba(61, 35, 20, 0.05)' : 'rgba(255,255,255,0.05)'
+                }}
+              >
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className={`relative px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+                      location.pathname === link.path 
+                        ? 'text-wood-dark' 
+                        : isScrolled 
+                          ? 'text-wood-medium hover:text-wood-dark' 
+                          : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    {/* Active background pill */}
+                    {location.pathname === link.path && (
+                      <span 
+                        className="absolute inset-0 bg-accent-gold rounded-full -z-10"
+                        style={{
+                          boxShadow: '0 2px 10px rgba(201, 160, 80, 0.3)',
+                        }}
+                      />
+                    )}
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            {/* CTA Button */}
-            <div className="hidden lg:flex items-center gap-4">
+            {/* CTA Button - Elegant */}
+            <div className="hidden lg:flex items-center gap-3">
+              {/* Phone number - subtle */}
               <a
                 href="tel:+393382850673"
-                className="flex items-center gap-2 btn-gold"
+                className={`hidden xl:flex items-center gap-2 text-sm transition-colors duration-300 ${
+                  isScrolled ? 'text-wood-medium hover:text-wood-dark' : 'text-white/60 hover:text-white'
+                }`}
               >
-                <Phone size={18} />
-                <span>Chiamaci</span>
+                <Phone size={14} />
+                <span>+39 338 285 0673</span>
               </a>
+              
+              {/* Divider */}
+              <div className={`hidden xl:block w-px h-6 ${isScrolled ? 'bg-wood-dark/10' : 'bg-white/20'}`} />
+              
+              {/* Main CTA */}
+              <Link
+                to="/contatti"
+                className="group relative flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-sm overflow-hidden bg-accent-gold text-wood-dark transition-all duration-300 hover:shadow-lg"
+                style={{
+                  boxShadow: '0 2px 10px rgba(201, 160, 80, 0.2)',
+                }}
+              >
+                <span className="relative z-10">Preventivo</span>
+                <ArrowRight size={16} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+                
+                {/* Hover overlay */}
+                <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-colors duration-300" />
+              </Link>
             </div>
 
             {/* Mobile Menu Button - Creative Hamburger */}
